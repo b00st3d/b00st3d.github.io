@@ -37,8 +37,8 @@ input[type=text], select {
 </style>
 <script type="text/javascript">
 	function gravCalc(){
-		var errorFlag = false;
-				if(isNaN(MassRatio.value) || MassRatio.value == "" || MassRatio.value == 0){
+		var errorFlag = false;  //initially set the flag to false since there is no error yet.
+				if(isNaN(MassRatio.value) || MassRatio.value == "" || MassRatio.value == 0){ //check if user entered a letter, nothing, or 0.
 				document.getElementById("MassRatio").value = 0;
 				errorFlag = true;
 				}
@@ -47,20 +47,19 @@ input[type=text], select {
 				errorFlag = true;
 				}
 				
-		if (errorFlag){
-			//document.getElementById("result").innerText = "Planetary Gravity: Invalid Input!"
+		if (errorFlag){ //display an error message for invalid input.
 			document.getElementById("result").innerHTML = "Planetary Gravity: <span style='color: red;'>Invalid Input!</span>"
-		} else {
+		} else { //we didn't find any errors so continue to calculations
 		var MR = parseFloat(MassRatio.value); //assign value of the Mass Ratio field to the MR variable
 		var PR = parseFloat(PlanetRadius.value); //assign value of the planet radius field to the PR variable
 		
-		var PR = PR/1000;
-		var PR = PR * Math.pow(10, 6);
-		var G = 6.67 * Math.pow(10, -11);
-		var EM = 5.98 * Math.pow(10, 24);
-		var output = (G * (EM * MR)) / Math.pow(PR, 2);
-		var gravity = (output / 9.807).toFixed(2);
-		document.getElementById("result").innerText = "Planetary Gravity: " + gravity + "g"
+		var PR = PR/1000; //convert our radius out of Kilometers
+		var PR = PR * Math.pow(10, 6);  //further refine the planet radius to fit the calculation
+		var G = 6.67 * Math.pow(10, -11);  //constant gravity (6.67e-11)
+		var EM = 5.98 * Math.pow(10, 24);  //constant for earth's mass (5.98e24)
+		var output = (G * (EM * MR)) / Math.pow(PR, 2); //calculation to determine gravity.  This number is in m/s2
+		var gravity = (output / 9.807).toFixed(2); //compare our number to earths gravity and find the percentage as Elite Dangerous displays it (9.8 m/s2)
+		document.getElementById("result").innerText = "Planetary Gravity: " + gravity + "g" //present the output for the user.
 		}
 	}
 </script>
