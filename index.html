@@ -1,0 +1,88 @@
+<html>
+<head>
+<title>E:D Planetary Gravity Calculator</title>
+<style>
+body {
+	background-color: silver;
+}
+input[type=text], select {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+#gravCalc {
+	border-radius: 5px;
+    background-color: #f2f2f2;
+    padding: 20px;
+	width: 50%;
+}
+#subButton {
+	width: 100%;
+    background-color: #4CAF50;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+#subButton:hover {
+	background-color: #45a049;
+}
+
+</style>
+<script type="text/javascript">
+	function gravCalc(){
+		var errorFlag = false;
+				if(isNaN(MassRatio.value) || MassRatio.value == "" || MassRatio.value == 0){
+				document.getElementById("MassRatio").value = 0;
+				errorFlag = true;
+				}
+				if(isNaN(PlanetRadius.value) || PlanetRadius.value == "" || PlanetRadius.value == 0){
+				document.getElementById("PlanetRadius").value = 0;
+				errorFlag = true;
+				}
+				
+		if (errorFlag){
+			//document.getElementById("result").innerText = "Planetary Gravity: Invalid Input!"
+			document.getElementById("result").innerHTML = "Planetary Gravity: <span style='color: red;'>Invalid Input!</span>"
+		} else {
+		var MR = parseFloat(MassRatio.value); //assign value of the Mass Ratio field to the MR variable
+		var PR = parseFloat(PlanetRadius.value); //assign value of the planet radius field to the PR variable
+		
+		var PR = PR/1000;
+		var PR = PR * Math.pow(10, 6);
+		var G = 6.67 * Math.pow(10, -11);
+		var EM = 5.98 * Math.pow(10, 24);
+		var output = (G * (EM * MR)) / Math.pow(PR, 2);
+		var gravity = (output / 9.807).toFixed(2);
+		document.getElementById("result").innerText = "Planetary Gravity: " + gravity + "g"
+		}
+	}
+</script>
+</head>
+<body>
+<div id="gravCalc"
+<form id="calculator">
+<center><h1>Welcome to the Elite Dangerous Gravity Calculation toolkit</h1></center>
+<br />
+<br />
+<label for="MassRatio">Please enter the planet's Earth Mass Ratio</label>
+<input id="MassRatio" type="text" placeholder="Earth Masses..."></input>
+<br />
+<br />
+<lable for="PlanetRadius">Please enter the planet's radius in Km</label>
+<input id="PlanetRadius" type="text" placeholder="Radius..."></input>
+<br />
+<br />
+<button id='subButton' type='button' onClick='gravCalc()'>Calculate Gravity</button>
+
+<br /><h2><div id="result">Planetary Gravity: <div></h2>
+</form>
+</div>
+</body>
+</html>
