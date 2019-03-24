@@ -1,0 +1,21 @@
+
+	#longText {
+        height:180px;
+        width:1200px;
+        border:1px solid #ccc;
+        font:16px/26px Georgia, Garamond, Serif;
+        overflow:auto;
+		background-color: brown;
+    }
+            
+	#form, .hide {
+	    display: none;
+    }
+
+    #playAgain {
+        display: none;
+    }
+	
+	body {
+	background-color: crimson;
+	}
