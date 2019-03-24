@@ -1,0 +1,128 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+	<link href="StyleSheet.css" rel="stylesheet" type="text/css">
+	  
+	</head>
+	<body>
+        <h2 class="hide">Player screen</h2>
+        <div class="show">Waiting for other player to join...</div>
+        <div class="timer hide"></div>
+		<div id="longText" class="hide">
+			<p>
+				
+			</p>
+		</div>
+        <div id="form">
+            <div class="question"></div>
+            <div class="answers">
+                
+            </div>
+            <button id="submitButton">Submit</button>
+        </div>
+        <div id="feedback">
+
+        </div>
+
+        <div id="playAgain">
+            <button onclick="location.reload()">Play again</button>
+        </div>
+
+        <script src="/socket.io/socket.io.js"></script>
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+        <script src="/public/js/shared.js"></script>
+        <script type="text/javascript">
+            const socket = io('/game')
+            let timer
+
+            $(function () {
+                socket.emit('joined', getUrlParameter('gameID'))
+
+                socket.on('full', function (text) {
+                    $(".hide").show()
+                    $(".show").hide()
+                    $("#longText p").text(text)
+                })
+
+                socket.on('timer', function (seconds) {
+                    $(".timer").text('Seconds left: ' + seconds)
+                })
+
+                socket.on('question', function (question) {
+                    $("#longText").css('display', 'none')
+                    $("#form").css('display', 'block')
+                    $(".timer").css('display', 'none')
+
+                    $(".question").text(question.question)
+
+                    let htmlAnswers = []
+                    for (let i = 0; i < Object.keys(question.answers).length; i++) {
+                        let answer = question.answers[i]
+                        htmlAnswers.push('<div><input type="radio" id="' + i + '" name="answers" value="' + i + '"> <label for="' + i + '">' + answer + '</label></div>')
+                    }
+
+                    htmlAnswers = shuffle(htmlAnswers)
+
+                    for (let i = 0; i < htmlAnswers.length; i++) {
+                        $(".answers").append(htmlAnswers[i])
+                    }
+                })
+
+                // When the other play presses a textEvent button.
+                socket.on('textEvent', function (textEvent) {
+                    switch (textEvent) {
+                        case 'hide':
+                            $("#longText p").hide()
+                            setTimeout(function () {
+                                $("#longText p").show()
+                            }, 5 * 1000)
+                        break;
+                        case 'color':
+                            let interval = setInterval(function () {
+                                $("#longText p").css('color', randomColor())    
+                            }, 10)
+                            
+                            setTimeout(function () {
+                                clearInterval(interval)
+                                $("#longText p").css('color', '#000000')    
+                            }, 5 * 1000)
+                        break;
+                    }
+                })
+
+                socket.on('correct', function (correct) {
+                    if (correct) {
+                        $("#feedback").text('You answered correctly')
+                    }
+                    else {
+                        $("#feedback").text('You answered incorrectly')
+                    }
+                    
+                    $("#playAgain").show()
+                })
+            })
+
+            // Submit the answer.
+            $("#submitButton").on('click', function (e) {
+                let radioValue = $("input[name='answers']:checked").val()
+                
+                if (radioValue != undefined) {
+                    socket.emit('answer', {
+                        answer: radioValue,
+                        gameID: getUrlParameter('gameID')
+                    })
+                    $("#form").hide()
+                }
+                else {
+                    alert('Choose an answer')
+                }
+                e.preventDefault()
+            })
+
+            // Generate a random color.
+            function randomColor() {
+                return '#' + ('00000' + (Math.random() * 16777216 << 0).toString(16)).substr(-6);
+            }
+        </script>
+    </body>
+</html>
