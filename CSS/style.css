@@ -1,0 +1,62 @@
+body {
+    text-align: center;
+    margin : 0;
+    padding : 0;
+    color: #ffffff;
+    background: #000000 url('../Images/body_background_dark.png') left top;
+    color : #000000;
+    height: 100%;
+    width: 100%;
+    }
+   table {
+   border: 1px solid #ccc;
+   border-collapse: collapse;
+   background-color: #202020;
+   color: white;
+   text-align:center;
+   margin:auto;
+   }
+   table td {
+   padding: 5px;
+   }
+   #tableInfo {
+    color:silver;
+    }
+    #header {
+    position : fixed;
+    width : 100%;
+    height : 2%;
+    top : 0;
+    right : 0;
+    bottom : auto;
+    left : 0;
+    border-bottom : 0px solid #cccccc;
+    }
+    #slider {
+        margin: auto;
+        width: 80%;
+    }
+    #values {
+        display:none;
+    }
+    #values input {
+        width:50px;
+    }
+   img {
+       border:none;
+       cursor:pointer;
+   }
+   table {
+       text-align:left;
+   }
+   td {
+       border-bottom:1px solid #555;
+   }
+   #fileUpload {
+       color:darkgrey;
+       border-style:solid;
+       border-width: thin;
+   }
+   a:visited {
+       color:purple;
+   }
