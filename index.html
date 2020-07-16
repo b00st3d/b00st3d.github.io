@@ -1,160 +1,97 @@
-﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:mso="urn:schemas-microsoft-com:office:office" xmlns:msdt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+﻿<html>
 <head>
-    <title>Recruiter Express Social Media Search Tool</title>
-<link href="CSS/style.css" rel="stylesheet">
-<link href="CSS/nouislider.css" rel="stylesheet">
-<script src="js/nouislider.js"></script>
-
-	<script type="text/javascript">
-	
-		var total=0;
-		//Credit for upload function: https://www.aspsnippets.com/Articles/Read-CSV-File-in-JavaScript-using-HTML5-File-API.aspx
-        function Upload() {
-            var fileUpload = document.getElementById("fileUpload");
-            var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.csv|.txt)$/;
-            if (regex.test(fileUpload.value.toLowerCase())) {
-                if (typeof (FileReader) != "undefined") {
-                    var reader = new FileReader();
-                    reader.onload = function (e) {
-                        var table = document.createElement("table");
-                        var rows = e.target.result.split("\n");
-						
-                        for (var i = 0; i < rows.length; i++) {
-                            var cells = rows[i].split(",");
-                            if (cells.length > 1) {
-                                var row = table.insertRow(-1);
-								var school = cells[25].split(" ");
-								var name = cells[13].split(" ");
-								row.insertCell(-1).innerHTML = i+1+".)";
-								row.insertCell(-1).innerHTML = cells[13]; //name
-								row.insertCell(-1).innerHTML = cells[25]; //school
-								row.insertCell(-1).innerHTML = cells[26]; //grad year
-								row.insertCell(-1).innerHTML = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-								row.insertCell(-1).innerHTML = cells[14]; //phone
-								if (cells[15]!="") {
-									row.insertCell(-1).innerHTML = "<a href=\"mailto:"+cells[15]+"\" target=\"_top\">Send Email</a>";
-								} else row.insertCell(-1);
-								row.insertCell(-1).innerHTML = "<input type=\"checkbox\" id=\"check"+i+"\" name=\"address\" value=\"https://www.facebook.com/search/top/?q="+cells[13]+"&epa=SEARCH_BOX\" target=\"_blank\"></input>";
-								row.insertCell(-1).innerHTML = "<input type=\"button\" value=\"Facebook Search\" style=\"cursor:pointer\" id=\"search"+i+"\" onclick=\"reColor(this);window.open('https://www.facebook.com/search/top/?q="+cells[13]+"&epa=SEARCH_BOX')\">";
-								row.insertCell(-1).innerHTML = "<input type=\"button\" value=\"Google Search\" style=\"cursor:pointer\" onclick=\"reColor(this);window.open('https://www.google.com/search?q="+school[0]+"+%22"+name[0]+"+"+name[1]+"%22')\">";
-							}
-							window.total=i+1; //update Global Variable
-						}
-						let x = document.getElementById("values");
-						x.style.display = "block";
-
-                        var dvCSV = document.getElementById("dvCSV");
-						var display = document.getElementById("display");
-                        dvCSV.innerHTML = "";
-						dvCSV.appendChild(table);
-						buildSlider(1, window.total);
-						//display.style.display(block);
-                    }
-                    reader.readAsText(fileUpload.files[0]);
-                } else {
-                    alert("This browser does not support HTML5.");
-                }
-            } else {
-                alert("Please upload a valid CSV file.");
-            }
-			document.getElementById("hidden").innerHTML = "<button id=\"multiSearch\" style=\"cursor:pointer\" onClick=\"multiSearch()\">Open Multiple</button>";
-		}
-		
-
-		function buildSlider(min, max){
-			var stepsSlider = document.getElementById('steps-slider');
-
-			var input0 = document.getElementById('input-with-keypress-0');
-			var input1 = document.getElementById('input-with-keypress-1');
-			var inputs = [input0, input1];
-
-			noUiSlider.create(stepsSlider, {
-				start: [1, 20],
-				connect: true,
-				range: {
-					'min': [1],
-					'1%': [1, 1],
-					'max': [max]
-				}
-			});
-
-			stepsSlider.noUiSlider.on('update', function (values, handle) {
-				inputs[handle].value = values[handle];
-				input0.value = parseFloat(input0.value).toFixed(0);
-				input1.value = parseFloat(input1.value).toFixed(0);
-				
-			});
-			var pipsSlider = document.getElementById('slider-pips');
+<title>E:D Planetary Gravity Calculator</title>
+<style>
+body {
+	background-color: Black;
 }
-		function fillChecks(){
-			var first = document.getElementById('input-with-keypress-0').value - 1
-			var last = document.getElementById('input-with-keypress-1').value
-			for (let i=0;i<window.total;i++){
-				console.log(i);
-				var x=document.getElementById("check"+i);
-				x.checked = true;
-				if (i<first || i > last-1){
-					x.checked = false;
-				}
-			}
-		}
+#gravCalc {
+	border-radius: 5px;
+    background-color: Black;
+    padding: 20px;
+	width: 97%;
+	color: orange;
+	font-weight: bold;
+}
+input[type=text], select {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+#subButton {
+	width: 100%;
+	background-color: Orange;
+    color: black;
+	font-weight: bold;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+	
+}
+#subButton:hover {
+	background-color: #e68a00
+}
 
-		function multiSearch(){
-			myTotal=window.total; //Global var to local var to make it easier to work with
-			for (var i=0;i<myTotal;i++){ //loop through the inputs to see what's checked.
-				var x=document.getElementById("check"+i);
-				var y=document.getElementById("search"+i);
-				if (x.checked) {
-					window.open(x.value);
-					reColor(y);
-					x.checked = false;
+</style>
+<script type="text/javascript">
+	function gravCalc(){
+		var errorFlag = false;  //initially set the flag to false since there is no error yet.
+				if(isNaN(MassRatio.value) || MassRatio.value == "" || MassRatio.value == 0){ //check if user entered a letter, nothing, or 0.
+				document.getElementById("MassRatio").value = 0;
+				errorFlag = true;
 				}
-			}
+				if(isNaN(PlanetRadius.value) || PlanetRadius.value == "" || PlanetRadius.value == 0){
+				document.getElementById("PlanetRadius").value = 0;
+				errorFlag = true;
+				}
+				
+		if (errorFlag){ //display an error message for invalid input.
+			document.getElementById("result").innerHTML = "Planetary Gravity: <span style='color: red;'>Invalid Input!</span>"
+		} else { //we didn't find any errors so continue to calculations
+		var MR = parseFloat(MassRatio.value); //assign value of the Mass Ratio field to the MR variable
+		var PR = parseFloat(PlanetRadius.value); //assign value of the planet radius field to the PR variable
+		
+		var PR = PR/1000; //convert our radius out of Kilometers
+		var PR = PR * Math.pow(10, 6);  //further refine the planet radius to fit the calculation
+		var G = 6.67 * Math.pow(10, -11);  //constant gravity (6.67e-11)
+		var EM = 5.98 * Math.pow(10, 24);  //constant for earth's mass (5.98e24)
+		var output = (G * (EM * MR)) / Math.pow(PR, 2); //calculation to determine gravity.  This number is in m/s2
+		var gravity = (output / 9.807).toFixed(2); //compare our number to earths gravity and find the percentage as Elite Dangerous displays it (9.8 m/s2)
+		document.getElementById("result").innerText = "Planetary Gravity: " + gravity + "g" //present the output for the user.
 		}
-		function reColor(x){
-			x.style.background="#6d6d6d";
-			x.style.color="purple";
-		}
-    </script>
+	}
+</script>
 </head>
 <body>
-    
-	<!--header-->
-<div id="header">
-<div id="img_link" style="float:right">		
-		<input type="file" id="fileUpload" style="height:23px" accept=".csv" /><br><br>
-		<span id="hidden"></span>
-		<input type="button" id="upload" value="Open" style="cursor:pointer" onclick="Upload()" />
-		
-		
-		
+<div id="gravCalc">
+<form id="calculator" onsubmit = "gravCalc(); return false;">
+<center><h1>Welcome to the Elite Dangerous Gravity Calculation toolkit</h1></center>
+<br />
+<br />
+<label for="MassRatio">Please enter the planet's Earth Masses </label>
+<input id="MassRatio" type="text" placeholder="Earth Masses..."></input>
+<br />
+<br />
+<label for="PlanetRadius">Please enter the planet's radius in Km</label>
+<input id="PlanetRadius" type="text" placeholder="Radius..."></input>
+<br />
+<br />
+<button id='subButton' type='submit'>Calculate Gravity</button>
+<br /><h2><div id="result">Planetary Gravity: <div></h2>
+</form>
 </div>
-
+<p />
+<p />
+<!--
+<div style="color: white">
+Check out my Youtube channel: <a href="https://www.youtube.com/user/steelrainwarrior" style="color:orange" target="_blank">https://www.youtube.com/user/steelrainwarrior</a>
 </div>
-<!--end header-->
-<div>
-	<span style="color:white;text-align:center;font-family:Stencil;font-size:48px;cursor:pointer;" onclick="window.open('http://www.goarmy.com')">Social Media<br>Search Tool</span><br><br>
-	<span style="color:white;text-align:center;font-family:Stencil;font-size:30px;">Social Media Search Tool</span>
-	<p style="color:white;font-weight:bold;font-size:large">
-	To use this tool: export a list in .csv format from recruiter zone.  Select the list with 'Choose File' and click 'Open'
-	</p>
-	<br>
-	<span id="hidden">
-	</span>
-	<br>
-	<br>
-	<div id="steps-slider"></div><br>
-	<div id="values">
-		<input type="number" step="1" id="input-with-keypress-0">&nbsp;<input type="number" id="input-with-keypress-1"><br><br><button onclick="fillChecks()">Fill Check Boxes</button><br><br>
-	</div>
-    <div id="dvCSV">
-	<!--Landing zone for data recieved above-->
-    </div>
-</div>
+-->
 </body>
 </html>
-
-
-
-
