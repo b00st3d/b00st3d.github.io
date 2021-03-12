@@ -1,97 +1,625 @@
-﻿<html>
+<!doctype html>
+<html lang="en">
 <head>
-<title>E:D Planetary Gravity Calculator</title>
-<style>
-body {
-	background-color: Black;
-}
-#gravCalc {
-	border-radius: 5px;
-    background-color: Black;
-    padding: 20px;
-	width: 97%;
-	color: orange;
-	font-weight: bold;
-}
-input[type=text], select {
-    width: 100%;
-    padding: 12px 20px;
-    margin: 8px 0;
-    display: inline-block;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-}
-#subButton {
-	width: 100%;
-	background-color: Orange;
-    color: black;
-	font-weight: bold;
-    padding: 14px 20px;
-    margin: 8px 0;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-	
-}
-#subButton:hover {
-	background-color: #e68a00
-}
+    <title>Online - Reverse Shell Generator</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="icon" href="favicon.ico" type="image/ico" sizes="16x16">
+    <link href="assets/bootstrap.min.css" rel="stylesheet">
+    <script src="assets/jquery-3.5.1.slim.min.js"></script>
+    <script src="assets/popper-1.16.1.min.js"></script>
+    <script src="assets/bootstrap-4.5.2.min.js"></script>
+    <link rel="stylesheet" href="css/dark-mode.min.css">
+    <link rel="stylesheet" href="css/light-mode.min.css">
+    <meta name="description" content="Reverse Shell generator with a ton of functionality."/>
+    <meta name="title" content="Online - Reverse Shell Generator">
+    <meta name="description" content="Reverse Shell generator with a ton of functionality.">
 
-</style>
-<script type="text/javascript">
-	function gravCalc(){
-		var errorFlag = false;  //initially set the flag to false since there is no error yet.
-				if(isNaN(MassRatio.value) || MassRatio.value == "" || MassRatio.value == 0){ //check if user entered a letter, nothing, or 0.
-				document.getElementById("MassRatio").value = 0;
-				errorFlag = true;
-				}
-				if(isNaN(PlanetRadius.value) || PlanetRadius.value == "" || PlanetRadius.value == 0){
-				document.getElementById("PlanetRadius").value = 0;
-				errorFlag = true;
-				}
-				
-		if (errorFlag){ //display an error message for invalid input.
-			document.getElementById("result").innerHTML = "Planetary Gravity: <span style='color: red;'>Invalid Input!</span>"
-		} else { //we didn't find any errors so continue to calculations
-		var MR = parseFloat(MassRatio.value); //assign value of the Mass Ratio field to the MR variable
-		var PR = parseFloat(PlanetRadius.value); //assign value of the planet radius field to the PR variable
-		
-		var PR = PR/1000; //convert our radius out of Kilometers
-		var PR = PR * Math.pow(10, 6);  //further refine the planet radius to fit the calculation
-		var G = 6.67 * Math.pow(10, -11);  //constant gravity (6.67e-11)
-		var EM = 5.98 * Math.pow(10, 24);  //constant for earth's mass (5.98e24)
-		var output = (G * (EM * MR)) / Math.pow(PR, 2); //calculation to determine gravity.  This number is in m/s2
-		var gravity = (output / 9.807).toFixed(2); //compare our number to earths gravity and find the percentage as Elite Dangerous displays it (9.8 m/s2)
-		document.getElementById("result").innerText = "Planetary Gravity: " + gravity + "g" //present the output for the user.
-		}
-	}
-</script>
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.revshells.com/">
+    <meta property="og:title" content="Online - Reverse Shell Generator">
+    <meta property="og:description" content="Reverse Shell generator with a ton of functionality.">
+    <meta property="og:image" content="https://user-images.githubusercontent.com/44453666/109582314-ef7f9e00-7acb-11eb-9c84-f8436e0022e9.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://www.revshells.com/">
+    <meta property="twitter:title" content="Online - Reverse Shell Generator">
+    <meta property="twitter:description" content="Reverse Shell generator with a ton of functionality.">
+    <meta property="twitter:image" content="https://user-images.githubusercontent.com/44453666/109582314-ef7f9e00-7acb-11eb-9c84-f8436e0022e9.png">
+    
+    <!-- GitHub Ribbon -->
+    <a href="https://github.com/0dayCTF/reverse-shell-generator" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
 </head>
-<body>
-<div id="gravCalc">
-<form id="calculator" onsubmit = "gravCalc(); return false;">
-<center><h1>Welcome to the Elite Dangerous Gravity Calculation toolkit</h1></center>
-<br />
-<br />
-<label for="MassRatio">Please enter the planet's Earth Masses </label>
-<input id="MassRatio" type="text" placeholder="Earth Masses..."></input>
-<br />
-<br />
-<label for="PlanetRadius">Please enter the planet's radius in Km</label>
-<input id="PlanetRadius" type="text" placeholder="Radius..."></input>
-<br />
-<br />
-<button id='subButton' type='submit'>Calculate Gravity</button>
-<br /><h2><div id="result">Planetary Gravity: <div></h2>
-</form>
-</div>
-<p />
-<p />
-<!--
-<div style="color: white">
-Check out my Youtube channel: <a href="https://www.youtube.com/user/steelrainwarrior" style="color:orange" target="_blank">https://www.youtube.com/user/steelrainwarrior</a>
-</div>
--->
+
+<body class="bg-black">
+    <div class="container d-flex flex-column vh-100">
+        <div class="custom-control custom-switch float-right">
+            <input id="lightSwitch" type="checkbox" class="custom-control-input">
+            <label for="lightSwitch" class="custom-control-label small pr-2 pb-1" style="padding-top:2px"
+                data-toggle="tooltip" title="Toggle Light Mode">Light Mode 🌓
+            </label>
+        </div>
+
+        <!-- Header -->
+        <div class="mb-auto row justify-content-center mt-3 mb-5">
+            <h2 class="rainbow">Reverse Shell Generator</h2>
+
+        </div>
+
+        <div class="row">
+
+            <!-- Configuration -->
+            <div class="col-12 col-md-6 mb-4">
+                <div class="card shadow h-100">
+                    <div class="card-body">
+                        <h5 class="card-title mb-0">
+                            <b>Configuration</b>
+                        </h5>
+
+                        <div class="card-text h-100">
+                            <form class="row justify-content-center align-items-center h-100">
+
+                                <!-- IP -->
+                                <div class="col-auto mt-4">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span id="ip-label" class="input-group-text">IP</span>
+                                        </div>
+                                        <input id="ip" type="text" class="form-control form-control-lg text-center px-1"
+                                            size="11" maxlength="15" placeholder="10.10.10.10" aria-label="IP"
+                                            aria-describedby="ip-label">
+                                    </div>
+                                </div>
+
+                                <!-- Port -->
+                                <div class="col-auto mt-4">
+                                    <div class="input-group" data-toggle="tooltip">
+                                        <div class="input-group-prepend">
+                                            <span id="port-label" class="input-group-text">Port</span>
+                                        </div>
+                                        <input id="port" type="text" class="form-control form-control-lg text-center"
+                                            size="4" maxlength="5" placeholder="9001" aria-label="Port"
+                                            aria-describedby="port-label">
+                                        <div class="input-group-append">
+                                            <button id="inc-port" class="btn btn-secondary btn-sm" type="button"
+                                                style="font-size: 12px" data-toggle="tooltip"
+                                                title="Increase port number by one">
+                                                +1
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div id="port-privileges-warning" class="col-12 small text-center"
+                                    style="visibility: hidden">
+                                    <span class="highlighted-warning">root</span>
+                                    privileges required.
+                                </div>
+
+                            </form>
+                        </div>
+                        <!-- /card-text -->
+
+                    </div>
+                </div>
+            </div>
+            <!-- /Configuration -->
+
+            <!-- Listener -->
+            <div class="col-12 col-md-6 mb-4">
+                <div class="card shadow h-100">
+                    <div class="card-body">
+
+                        <!-- Advanced switch -->
+                        <div class="custom-control custom-switch float-right">
+                            <input id="listener-advanced-switch" type="checkbox" class="custom-control-input" checked>
+                            <label for="listener-advanced-switch" class="custom-control-label small pr-2 pb-1"
+                                style="padding-top:2px" data-toggle="tooltip" title="Display advanced settings">
+                                Advanced
+                            </label>
+                        </div>
+
+                        <h5 class="card-title"><b>Listener</b></h5>
+
+                        <div class="card-text">
+
+                            <!-- Command -->
+                            <div class="row justify-content-center">
+                                <div class="col-auto position-relative" style="min-width: 300px">
+                                    <pre class="prompt-sign">🚀</pre>
+                                    <pre id="listener-command" class="bg-dark border text-wrap text-break p-4 pl-5 mb-2"
+                                        style="outline: none; font-size:1em;" contenteditable="true"></pre>
+                                </div>
+                            </div>
+
+                            <!-- Advanced section-->
+                            <form class="row justify-content-center collapse" id="listener-advanced">
+                                <label for="listener-selection" class="col-auto col-form-label">Type</label>
+                                <div class="col-auto">
+                                    <select class="custom-select" id="listener-selection">
+                                        <!-- filled by init()-->
+                                    </select>
+                                </div>
+                            </form>
+
+                        </div>
+                        <!-- /card-text -->
+
+                        <!-- Copy button -->
+                        <button id="copy-listener" type="button" class="btn btn-primary float-right"
+                            data-toggle="tooltip" title="Copy to clipboard">
+                            Copy
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!-- /Step 2 -->
+
+        </div>
+
+        <!-- Reverse Shell -->
+        <div class="card shadow mb-5">
+            <div class="card-body">
+
+                <!-- Advanced switch -->
+                <div class="custom-control custom-switch float-right">
+                    <input id="revshell-advanced-switch" type="checkbox" class="custom-control-input" checked>
+                    <label for="revshell-advanced-switch" class="custom-control-label small pr-2 pb-1"
+                        style="padding-top:2px" data-toggle="tooltip" title="Display advanced settings">
+                        Advanced
+                    </label>
+                </div>
+
+                <h5 class="card-title"><b>Reverse shell</b></h5>
+
+                <div class="card-text mt-4">
+                    <div class="row">
+
+                        <!-- Left column: Reverse shell selection -->
+                        <div class="col-12 col-md-3">
+                            <div id="reverse-shell-selection" class="list-group overflow-auto"
+                                style="max-height: 520px">
+                                <!-- filled by init()-->
+                            </div>
+                        </div>
+
+                        <!-- Right column -->
+                        <div class="col-12 col-md-9 d-flex flex-column">
+
+                            <!-- Command -->
+                            <div class="row flex-grow-1">
+                                <div class="col position-relative">
+                                    <pre class="prompt-sign">🚀</pre>
+                                    <pre id="reverse-shell-command" class="bg-dark border pre-wrap text-break p-4 pl-5"
+                                        style="outline: none; font-size:1em;" contenteditable="true"></pre>
+                                </div>
+                            </div>
+
+                            <!-- Advanced section -->
+                            <form class="row justify-content-center collapse" id="revshell-advanced">
+
+                                <!-- Shell -->
+                                <div class="col-auto mr-3">
+                                    <div class="row">
+                                        <label for="shell" class="col-auto col-form-label">Shell</label>
+                                        <div class="col-auto">
+                                            <select id="shell" class="custom-select">
+                                                <!-- filled by init()-->
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Encoding -->
+                                <div class="col-auto ml-3">
+                                    <div class="form-group row">
+                                        <label for="encoding" class="col-auto col-form-label">Encoding</label>
+                                        <div class="col-auto">
+                                            <select id="encoding" class="custom-select">
+                                                <option selected>None</option>
+                                                <option>encodeURI</option>
+                                                <option>encodeURIComponent</option>
+                                                <option>Base64</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                               <!-- Upgrader -->
+                               <!-- <div class="col-auto mr-3">
+                                <div class="row">
+                                    <label for="upgrades" class="col-auto col-form-label">Upgrade</label>
+                                    <div class="col-auto">
+                                        <select id="upgrades" class="custom-select">
+                                          </select>
+                                    </div>
+                                </div>
+                            </div> -->
+
+                            </form>
+                            <!-- /Advanced section -->
+
+                            <div class="row justify-content-end mr-1">
+                                <!-- Auto-copy switch -->
+                                <div class="custom-control custom-switch mt-2 mr-3" data-toggle="tooltip"
+                                    title="Auto-copy to clipboard when selecting a new shell type">
+                                    <input id="auto-copy-switch" class="custom-control-input" type="checkbox" checked>
+                                    <label for="auto-copy-switch" class="custom-control-label small pr-2 pb-1"
+                                        style="padding-top: 2px">Auto-copy</label>
+                                </div>
+                                <!-- Copy button -->
+                                <button id="copy-reverse-shell-command" data-toggle="tooltip" title="Copy to clipboard"
+                                    type="button" class="btn btn-primary float-right">
+                                    Copy
+                                </button>
+                            </div>
+
+                        </div>
+                        <!-- /Right column -->
+
+                    </div>
+                </div>
+                <!-- /card-text -->
+
+            </div>
+        </div>
+        <!-- /Reverse Shell -->
+
+    </div>
+
+
+    <!-- Toasts -->
+    <div id="clipboard-toast" class="toast position-fixed text-white" data-delay="1200"
+        style="bottom: 16px; left: 50%; transform: translateX(-50%); background: rgba(32, 32, 32, .85)">
+        <div class="toast-body">
+            Copied to clipboard
+        </div>
+    </div>
+
+    <div id="clipboard-failure-toast" class="toast position-fixed text-white" data-delay="1200"
+        style="bottom: 16px; left: 50%; transform: translateX(-50%); background: rgba(255, 0, 0, .85)">
+        <div class="toast-body">
+            Error copying to clipboard
+        </div>
+    </div>
+
+    <!-- RSG data -->
+    <script src="js/data.js"></script>
+
+    <!-- RSG logic -->
+    <script>
+        const rsg = {
+            currentCommandType: 'Bash -i',
+
+            copyToClipboard: function (text) {
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(text)
+                    $('#clipboard-toast').toast('show')
+                } else if (window.clipboardData && window.clipboardData.setData) {
+                    window.clipboardData.setData('Text', text);
+                    $('#clipboard-toast').toast('show')
+                } else {
+                    $('#clipboard-failure-toast').toast('show')
+                }
+            },
+
+            escapeHTML: function (text) {
+                return String(text).replace(/</, '&lt;').replace(/>/, '&gt;')
+            },
+
+            getIP: function () {
+                return $('#ip').val() || $('#ip').attr('placeholder')
+            },
+
+            getPort: function () {
+                return Number($('#port').val() || $('#port').attr('placeholder'))
+            },
+
+            getReverseShellCommand: function () {
+                const reverseShellData = rsgData.reverseShellsCommands.filter(function (reverseShellData) {
+                    return reverseShellData[0] === rsg.currentCommandType
+                })[0]
+                return reverseShellData[1]
+            },
+
+            highlightParameters: function (text, encoder) {
+                const parameters = ['{ip}', '{port}', '{shell}', encodeURI('{ip}'), encodeURI('{port}'),
+                    encodeURI('{shell}')
+                ]
+                parameters.forEach(function (param) {
+                    if (encoder) param = encoder(param)
+                    text = text.replace(param, '<span class="highlighted-parameter">' + param +
+                        '</span>')
+                })
+                return text
+            },
+
+            init: function () {
+                rsg.initListenerSelection()
+                rsg.initShells()
+                rsg.initReverseShellSelection()
+                // rsg.initUpgrader()
+            },
+
+            initListenerSelection: function () {
+                rsgData.listenerCommands.forEach(function (listenerData, i) {
+                    const type = listenerData[0],
+                        command = listenerData[1]
+                    $('#listener-selection').append($('<option>', {
+                        text: type,
+                        value: command,
+                        selected: i === 0,
+                        class: 'listener-option',
+                    }))
+                })
+            },
+
+            initShells: function () {
+                rsgData.shells.forEach(function (shell, i) {
+                    $('#shell').append($('<option>', {
+                        text: shell,
+                        selected: i === 0,
+                        class: 'shell-option',
+                    }))
+                })
+            },
+
+            // initUpgrader: function () {
+            //     rsgData.upgrades.forEach(function (upgrades, i) {
+            //         $('#upgrades').append($('<option>', {
+            //             text: upgrades,
+            //             selected: i === 0
+            //         }))
+            //     })
+            // },
+            
+            initReverseShellSelection: function () {
+                rsgData.reverseShellsCommands.forEach(function (reverseShellData) {
+                    const type = reverseShellData[0]
+                    const selectionEntry = $('<a>', {
+                        href: '#',
+                        text: type,
+                        'class': 'list-group-item',
+                        click: function (event) {
+                            rsg.currentCommandType = type
+                            rsg.updateReverseShellSelection()
+                            rsg.updateReverseShellCommand()
+                            if ($('#auto-copy-switch').prop('checked')) {
+                                rsg.copyToClipboard($('#reverse-shell-command').text())
+                            }
+                            event.preventDefault()
+                        }
+                    })
+                    setTimeout(function () { // fix strange IE behavior
+                        selectionEntry.addClass('list-group-item-action')
+                    }, 0)
+
+                    $('#reverse-shell-selection').append(selectionEntry)
+                })
+            },
+
+            insertParameters: function (command, encoder) {
+                return command
+                    .replace(encoder('{ip}'), rsg.escapeHTML(encoder(rsg.getIP())))
+                    .replace(encoder('{port}'), encoder(String(rsg.getPort())))
+                    .replace(encoder('{shell}'), encoder($('#shell').val()))
+            },
+
+            update: function () {
+                rsg.updateListenerCommand()
+                rsg.updateReverseShellSelection()
+                rsg.updateReverseShellCommand()
+            },
+
+            updateListenerCommand: function () {
+                let command = $('#listener-selection').val()
+                command = rsg.highlightParameters(command)
+                command = command.replace('{port}', rsg.getPort())
+
+                if (rsg.getPort() < 1024) {
+                    $('#port-privileges-warning').css('visibility', 'visible')
+                    command = '<span class="highlighted-warning">sudo</span> ' + command
+                } else {
+                    $('#port-privileges-warning').css('visibility', 'hidden')
+                }
+
+                $('#listener-command').html(command)
+            },
+
+            updateReverseShellSelection: function () {
+                console.log(rsg.currentCommandType)
+                $('.list-group-item.active').removeClass('active')
+                $('.list-group-item').filter(function () {
+                    return $(this).text() === rsg.currentCommandType
+                }).addClass('active')
+            },
+
+            updateReverseShellCommand: function () {
+                let command
+
+                if (rsg.currentCommandType === 'PowerShell #3 (Base64)') {
+                    const encoder = function (text) {
+                        return text
+                    }
+                    const payload = rsg.insertParameters(rsgData.specialCommands['PowerShell payload'], encoder)
+                    command = "powershell -e " + btoa(payload)
+                } else {
+                    command = rsg.getReverseShellCommand()
+                }
+
+                const encoding = $('#encoding').val()
+                if (encoding === 'Base64') {
+                    command = btoa(command)
+                } else {
+                    function encoder(string) {
+                        return (encoding === 'encodeURI' || encoding === 'encodeURIComponent') ? window[
+                            encoding](string) : string
+                    }
+
+                    command = rsg.insertParameters(
+                        rsg.highlightParameters(
+                            encoder(command), encoder),
+                        encoder
+                    )
+                }
+
+                $('#reverse-shell-command').html(command)
+            },
+            
+            updateSwitchStates: function () {
+                $('#listener-advanced').collapse($('#listener-advanced-switch').prop('checked') ? 'show' :
+                    'hide')
+                $('#revshell-advanced').collapse($('#revshell-advanced-switch').prop('checked') ? 'show' :
+                    'hide')
+            }
+        }
+
+        /*
+         * Event handlers
+         */
+        $('#shell, #encoding').on('change', function()
+        {
+            rsg.updateReverseShellCommand();
+            setLocalStorage(shellSelect, "shell", "value");
+        })
+
+        $('#inc-port').on('click', function () {
+            $('#port').val(rsg.getPort() + 1);
+            rsg.update();
+            setLocalStorage(portInput, "port", "value");
+        })
+
+        $('#listener-advanced-switch, #revshell-advanced-switch').on('change', rsg.updateSwitchStates)
+        setInterval(rsg.updateSwitchStates, 500) // fix switch changes in rapid succession
+
+        $('#copy-listener').on('click', function () {
+            rsg.copyToClipboard($('#listener-command').text())
+        })
+
+        $('#copy-reverse-shell-command').on('click', function () {
+            rsg.copyToClipboard($('#reverse-shell-command').text())
+        })
+
+        /*
+         * LocalStorage setting/getting
+         */
+        const listenerSelect = document.querySelector("#listener-selection");
+        const ipInput = document.querySelector("#ip");
+        const portInput = document.querySelector("#port");
+        const shellSelect = document.querySelector("#shell");
+        const autoCopySwitch = document.querySelector("#auto-copy-switch");
+
+        /**
+         * Sets item to localStorage when user moves focus from element
+         * @param {Object} element - The element to get value from
+         * @param {String} key - Key of localStorage value
+         * @param {String} attribute - Attribute of element to set to localStorage value
+         */
+        const setLocalStorage = (element, key, attribute) => {
+            if (!element || typeof element !== "object") return;
+            localStorage.setItem(key, element[attribute]);
+        }
+
+        /**
+         * Prepopulates element if localStorage value exists
+         * @param {String} key - Key of localStorage value
+         * @param {Object} element - The element to apply value to
+         * @param {String} attribute - Attribute of element to apply localStorage value to
+         */
+        const prepopulateElement = (key, element, attribute, options = null) => {
+            if (localStorage.getItem(key)) {
+                // TODO: Use switch/case instead
+                if (element.type === "text") {
+                    element[attribute] = localStorage.getItem(key);
+                }
+
+                if (element.type === "checkbox") {
+                    const isChecked = (localStorage.getItem(key) !== 'false');
+                    element[attribute] = isChecked;
+                }
+
+                if (element.nodeName === "SELECT") {
+                    const selectedItem = options.find(option => option[attribute] === localStorage.getItem(key));
+                    selectedItem.selected = true;
+                }
+
+            }
+        }
+
+        /*
+         * Prepopulating fields on load from localStorage
+         */
+        // TODO: async/await
+        setTimeout(() => {
+            const listenerOptions = listenerSelect.querySelectorAll(".listener-option");
+            prepopulateElement("listener", listenerSelect, "value", [...listenerOptions]);
+
+            rsg.updateListenerCommand();
+        }, 500);
+
+        setTimeout(() => {
+            const shellOptions = shellSelect.querySelectorAll(".shell-option");
+            prepopulateElement("shell", shellSelect, "value", [...shellOptions]);
+
+            rsg.updateReverseShellCommand();
+        }, 500);
+
+        prepopulateElement("ip", ipInput, "value");
+        prepopulateElement("port", portInput, "value");
+        prepopulateElement("auto-copy", autoCopySwitch, "checked");
+
+        /*
+         * Event listeners for setting localStorage values
+         */
+        ipInput.addEventListener("input", () => {
+            setLocalStorage(ipInput, "ip", "value");
+            rsg.update();
+        });
+
+        portInput.addEventListener("input", () => {
+            setLocalStorage(portInput, "port", "value");
+            rsg.update();
+        });
+
+        listenerSelect.addEventListener("change", () => {
+            rsg.updateListenerCommand();
+
+            const listenerOptions = listenerSelect.querySelectorAll(".listener-option");
+            const selectedItem = [...listenerOptions].find(option => option.selected);
+            setLocalStorage(selectedItem, "listener", "value");
+        });
+
+        shellSelect.addEventListener("change", () => {
+            rsg.updateReverseShellSelection();
+
+            const shellOptions = shellSelect.querySelectorAll(".shell-option");
+            const selectedItem = [...shellOptions].find(option => option.selected);
+            setLocalStorage(selectedItem, "shell", "value");
+        });
+
+        autoCopySwitch.addEventListener("change", () => {
+            setLocalStorage(autoCopySwitch, "auto-copy", "checked");
+        });
+
+        /*
+         * Init
+         */
+        $(document).ready(function () {
+            rsg.init()
+            rsg.update()
+        })
+
+
+        // Popper tooltips
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+    </script>
+
+    <script src="js/light-mode-switch.min.js"></script>
+
 </body>
+
 </html>
